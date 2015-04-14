@@ -4,7 +4,7 @@
   "description": "Cache by redis, easy use. Include functions get/set/del.",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
