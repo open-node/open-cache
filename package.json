@@ -1,0 +1,24 @@
+{
+  "name": "open-cache",
+  "version": "0.0.1",
+  "description": "Cache by redis, easy use. Include functions get/set/del.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:open-node/open-cache.git"
+  },
+  "keywords": [
+    "cache",
+    "redis",
+    "memory"
+  ],
+  "author": "Redstone Zhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-node/open-cache/issues"
+  },
+  "homepage": "https://github.com/open-node/open-cache"
+}

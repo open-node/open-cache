@@ -1,0 +1,14 @@
+.DS_*
+node_modules
+node_modules/*
+*.sublime*
+psd
+thumb
+*.log
+/index.coffee
+/lib/*.coffee
+/lib/helper/*.coffee
+samples
+build
+*~
+npm-debug.log
