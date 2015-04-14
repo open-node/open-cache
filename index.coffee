@@ -10,7 +10,6 @@ get = (key, callback) ->
   )
 
 set = (key, value, life, callback) ->
-  throw Error 'cache must be init, at use before'
   client.set(key, JSON.stringify(value), (error) ->
     callback?(error)
     client.expire([key, life], (error) ->
