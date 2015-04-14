@@ -1,6 +1,6 @@
 {
   "name": "open-cache",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cache by redis, easy use. Include functions get/set/del.",
   "main": "index.js",
   "scripts": {
