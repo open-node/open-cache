@@ -92,7 +92,7 @@ describe 'cache', ->
         )
       )
 
-    it "call cache, auto cached function, exec fail", (done) ->
+    it "call cache, auto cached function, exec fail, no-cache", (done) ->
       count = 0
       asyncFn = (path, callback) ->
         count += 1
@@ -114,5 +114,39 @@ describe 'cache', ->
               done()
             )
           , 1000
+        )
+      )
+
+    it "call cache, auto cached function, exec fail, restore cache", (done) ->
+      count = 0
+      asyncFn2 = (path, callback) ->
+        count += 1
+        process.nextTick ->
+          return callback(null, 'hello world') if count > 1
+          callback(Error 'something is wrong')
+
+      asyncFn2 = cache "asyncFn2:{0}", asyncFn2, 1
+
+      asyncFn2('./index.coffee', (error, data) ->
+        assert.equal 1, count
+        assert.equal 'something is wrong', error.message
+        assert.equal undefined, data
+        asyncFn2('./index.coffee', (error, data) ->
+          assert.equal 2, count
+          assert.equal null, error
+          assert.equal 'hello world', data
+          asyncFn2('./index.coffee', (error, data) ->
+            assert.equal 2, count
+            assert.equal null, error
+            assert.equal 'hello world', data
+            setTimeout ->
+              asyncFn2('./index.coffee', (error, data) ->
+                assert.equal 3, count
+                assert.equal null, error
+                assert.equal 'hello world', data
+                done()
+              )
+            , 1000
+          )
         )
       )
