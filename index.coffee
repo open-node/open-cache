@@ -57,10 +57,14 @@ cache = (key, func, life, bind) ->
       # 这里要注意的是我们只cache成功的结果。失败的，错误的都不cache
       # 以免影响用户既有功能
       args.push((error, result) ->
-        return callback(error, result) if errror
+        return callback(error, result) if error
         set(key, result, life)
         callback(error, result)
       )
+      # 执行函数
+      # 因为callback已经是被替换后的函数了。
+      # 所以尽管只是简单的调用的用户的函数，但其实会把他的结果cache起来
+      func.apply(bind, args)
     )
 
 cache.init = (port = 6379, ip = '127.0.0.1', opts) ->
