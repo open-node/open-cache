@@ -78,13 +78,16 @@ describe 'cache', ->
 
       readFile('./index.coffee', (error, data) ->
         assert.equal 1, count
+        assert.equal null, error
         assert.equal 'hello world', data
         readFile('./index.coffee', (error, data) ->
           assert.equal 1, count
+          assert.equal null, error
           assert.equal 'hello world', data
           setTimeout ->
             readFile('./index.coffee', (error, data) ->
               assert.equal 2, count
+              assert.equal null, error
               assert.equal 'hello world', data
               done()
             )
@@ -104,13 +107,16 @@ describe 'cache', ->
       asyncFn('./index.coffee', (error, data) ->
         assert.equal 1, count
         assert.equal 'something is wrong', error.message
+        assert.equal undefined, data
         asyncFn('./index.coffee', (error, data) ->
           assert.equal 2, count
           assert.equal 'something is wrong', error.message
+          assert.equal undefined, data
           setTimeout ->
             asyncFn('./index.coffee', (error, data) ->
               assert.equal 3, count
               assert.equal 'something is wrong', error.message
+              assert.equal undefined, data
               done()
             )
           , 1000
