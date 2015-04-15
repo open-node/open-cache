@@ -25,7 +25,7 @@ describe 'cache', ->
       done()
 
     it "call cache.get name non-exists", (done) ->
-      cache.init()
+      cache.init(null, null, {namespace: 'open-cache-test'})
       cache.get('name', (error, result) ->
         assert.equal null, error
         assert.equal  undefined, result
@@ -156,3 +156,27 @@ describe 'cache', ->
           )
         )
       )
+
+    key1 = "http://trackx.stonephp.com/api_v2/campaigns/26956/reports/basics?startDate=2015-04-08&endDate=2015-04-14&maxResults=300&dimensions=media&metrics=imp%2Cclk%2Cuimp%2Cuclk%2CctRate&sort=-imp&startIndex=0&access_token=32d2011d39618c842183713f7a80c6926ee2a0f2"
+    key2 = "http://trackx.stonephp.com/api_v2/campaigns/26998/reports/basics?startDate=2015-04-08&endDate=2015-04-14&maxResults=300&dimensions=media&metrics=imp%2Cclk%2Cuimp%2Cuclk%2CctRate&sort=-imp&startIndex=0&access_token=32d2011d39618c842183713f7a80c6926ee2a0f2"
+    it "set, get, key length test", (done) ->
+      cache.set key1, 'key1', 1, (error) ->
+        assert.equal null, error
+        cache.get key2, (error, data) ->
+          assert.equal null, error
+          assert.equal undefined, data
+          cache.get key1, (error, data) ->
+            assert.equal null, error
+            assert.equal 'key1', data
+            done()
+
+    it "set, get, key length test 2", (done) ->
+      cache.set key2, 'key2', 1, (error) ->
+        assert.equal null, error
+        cache.get key2, (error, data) ->
+          assert.equal null, error
+          assert.equal 'key2', data
+          cache.get key1, (error, data) ->
+            assert.equal null, error
+            assert.equal 'key1', data
+            done()
