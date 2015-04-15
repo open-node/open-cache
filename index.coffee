@@ -33,17 +33,16 @@ del = (key, callback = console.error) ->
 # 只为cache 函数使用，用来根据用户执行函数的参数中获取到cache的key
 # 有别于getKey
 ###
-cacheKey = (key, args) ->
+cacheKey = (tpl, args) ->
   regxp = /\{(\d+)\}/g
-  keyReplace = regxp.test(key)
-  return key unless keyReplace
-  key.replace(regxp, (m, i) -> args[i])
+  return tpl unless regxp.test(tpl)
+  tpl.replace(regxp, (m, i) -> args[i])
 
-cache = (key, func, life, bind) ->
+cache = (keyTpl, func, life, bind) ->
   throw Error 'cache must be init, at use before' unless client
   (args..., callback) ->
     throw "Callback function non-exists" unless _.isFunction(callback)
-    key = cacheKey(key, args)
+    key = cacheKey(keyTpl, args)
     get(key, (error, result) ->
       # 获取cache有错误的时候需要输出，但是不需要通知调用方，对调用方透明
       # 因为调用方可能压根没有处理这种异常的逻辑
