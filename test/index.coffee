@@ -1,5 +1,4 @@
 assert      = require 'assert'
-fs          = require 'fs'
 cache       = require '../'
 
 
@@ -72,11 +71,23 @@ describe 'cache', ->
       count = 0
       readFile = (path, callback) ->
         count += 1
-        fs.readFile(path, callback)
+        process.nextTick ->
+          callback(null, 'hello world')
 
       readFile = cache "fs.readFile:{0}", readFile, 1
 
       readFile('./index.coffee', (error, data) ->
         assert.equal 1, count
-        done()
+        assert.equal 'hello world', data
+        readFile('./index.coffee', (error, data) ->
+          assert.equal 1, count
+          assert.equal 'hello world', data
+          setTimeout ->
+            readFile('./index.coffee', (error, data) ->
+              assert.equal 2, count
+              assert.equal 'hello world', data
+              done()
+            )
+          , 1000
+        )
       )
