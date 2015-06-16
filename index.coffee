@@ -70,6 +70,8 @@ cache.init = (port = 6379, ip = '127.0.0.1', opts) ->
   return if client
   namespace = opts and opts.namespace or ''
   client = redis.createClient(port, ip, opts and opts.redis)
+  client.on 'error', (error) ->
+    console.error error
   cache.get = get
   cache.set = set
   cache.del = del

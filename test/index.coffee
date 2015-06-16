@@ -28,7 +28,7 @@ describe 'cache', ->
       cache.init(null, null, {namespace: 'open-cache-test'})
       cache.get('name', (error, result) ->
         assert.equal null, error
-        assert.equal  undefined, result
+        assert.equal undefined, result
         done()
       )
 
