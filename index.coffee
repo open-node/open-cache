@@ -40,7 +40,7 @@ cacheKey = (tpl, args) ->
 
 cache = (keyTpl, func, life, bind) ->
   throw Error 'cache must be init, at use before' unless client
-  (args..., callback) ->
+  fn = (args..., callback) ->
     throw "Callback function non-exists" unless _.isFunction(callback)
     key = cacheKey(keyTpl, args)
     get(key, (error, result) ->
@@ -65,6 +65,10 @@ cache = (keyTpl, func, life, bind) ->
       # 所以尽管只是简单的调用的用户的函数，但其实会把他的结果cache起来
       func.apply(bind, args)
     )
+
+  fn.removeKey = (args..., callback = console.error) ->
+    del(cacheKey(keyTpl, args), callback)
+  fn
 
 cache.init = (port = 6379, ip = '127.0.0.1', opts) ->
   return if client

@@ -180,3 +180,30 @@ describe 'cache', ->
             assert.equal null, error
             assert.equal 'key1', data
             done()
+
+    it "removeKey test", (done) ->
+      count = 0
+      fn = (key, callback) ->
+        count += 1
+        callback(null, "#{key}, Hello world")
+
+      fn = cache('Key: {0}', fn, 1000)
+      fn('nihao', (error, result) ->
+        assert.ifError(error)
+        assert.equal('nihao, Hello world', result)
+        fn.removeKey('nihao', (error) ->
+          cache.get('Key: nihao', (error, result) ->
+            assert.ifError(error)
+            assert.equal(null, result)
+            fn('nihao', (error, result) ->
+              assert.ifError(error)
+              assert.equal('nihao, Hello world', result)
+              assert.equal(2, count)
+              fn.removeKey('nihao', (error) ->
+                assert.ifError(error)
+                done()
+              )
+            )
+          )
+        )
+      )
