@@ -29,7 +29,7 @@ set = (key, value, life, callback) ->
 flush = (key, callback) ->
   client.keys(getKey(key), (error, list) ->
     return callback(error) if error
-    async.each(list, client.del, callback)
+    async.each(list, client.del.bind(client), callback)
   )
 
 del = (key, callback = console.error) ->
