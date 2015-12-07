@@ -86,6 +86,8 @@ cache.init = (port = 6379, ip = '127.0.0.1', opts) ->
   cache.get = get
   cache.set = set
   cache.del = del
+  cache.flush = flush
+  cache.client = client
 
 cache.get = cache.set = cache.del =  ->
   throw Error 'cache must be init, at use before'
