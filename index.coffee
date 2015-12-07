@@ -1,5 +1,6 @@
 redis     = require 'redis'
 _         = require 'underscore'
+async     = require 'async'
 
 
 client = null
@@ -23,6 +24,12 @@ set = (key, value, life, callback) ->
     client.expire([key, +life or 1], (error) ->
       console.error error if error
     )
+  )
+
+flush = (key, callback) ->
+  client.keys(getKey(key), (error, list) ->
+    return callback(error) if error
+    async.each(list, client.del, callback)
   )
 
 del = (key, callback = console.error) ->
