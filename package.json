@@ -1,6 +1,6 @@
 {
   "name": "open-cache",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Cache by redis, easy use. Include functions get/set/del.",
   "main": "index.js",
   "scripts": {
@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/open-node/open-cache",
   "dependencies": {
-    "async": "^1.5.0",
-    "hiredis": "0.4.1",
-    "redis": "^0.12.1",
-    "underscore": "^1.8.3"
+    "async": "^2.1.5",
+    "hiredis": "^0.5.0",
+    "redis": "^2.7.1",
+    "underscore": "*"
   }
 }
